@@ -17,7 +17,7 @@ class _HomePageState extends State<HomePage> {
       length: 2,
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Todo List'),
+          title: const Text('TODO LIST', style: TextStyle(fontWeight: FontWeight.bold),),
           bottom: const TabBar(
             tabs: [
               Tab(
@@ -30,6 +30,7 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
         body: TabBarView(
+          // Peding Task
           children: [
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
@@ -85,7 +86,8 @@ class _HomePageState extends State<HomePage> {
                                       builder: (context) => EditPage(
                                         taskTitle: 'Task $index',
                                         taskDate: DateTime.now(),
-                                        taskDetail: 'Task detail of task $index',
+                                        taskDetail:
+                                            'Task detail of task $index',
                                       ),
                                     ),
                                   );
@@ -121,12 +123,106 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
             ),
-            Center(
-              child: ListView.builder(
-                itemCount: 10,
+
+            // Completed task
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+              child: ListView.separated(
+                itemCount: 15,
                 itemBuilder: (context, index) {
-                  return Text('Task $index');
+                  return Container(
+                    height: 50,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(6),
+                      color: Colors.white,
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Checkbox(
+                          value: true,
+                          onChanged: (bool? newValue) {
+                            setState(() {});
+                          },
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            showDialog(
+                                context: context,
+                                builder: (context) => AlertDialog(
+                                      title: Text(
+                                        'Task $index',
+                                      ),
+                                      content: const Text(
+                                        'Task detail',
+                                      ),
+                                    ));
+                          },
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                'Task $index',
+                                style: TextStyle(color: Colors.grey[400]),
+                              ),
+                              Text(
+                                'Task date',
+                                style: TextStyle(color: Colors.grey[400]),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Row(
+                          children: [
+                            Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(4),
+                                color: Colors.grey[200],
+                              ),
+                              child: InkWell(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => EditPage(
+                                        taskTitle: 'Task $index',
+                                        taskDate: DateTime.now(),
+                                        taskDetail:
+                                            'Task detail of task $index',
+                                      ),
+                                    ),
+                                  );
+                                },
+                                child: Icon(
+                                  Icons.edit,
+                                  color: Colors.grey[800],
+                                ),
+                              ),
+                            ),
+                            const SizedBox(
+                              width: 10,
+                            ),
+                            Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(4),
+                                color: Colors.grey[200],
+                              ),
+                              child: Icon(
+                                Icons.delete,
+                                color: Colors.grey[800],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  );
                 },
+                separatorBuilder: (BuildContext context, int index) =>
+                    const SizedBox(
+                  height: 10,
+                ),
               ),
             ),
           ],
